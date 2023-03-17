@@ -1,8 +1,8 @@
 #include <stdio.h>
 /**
- * main - main function using putchar
+ * main - main function prints all single digit numbers
  *
- * Reurn: always 0
+ * Return: always 0
  */
 int main(void)
 {
