@@ -17,7 +17,7 @@ int main(void)
 		{
 			for (k = 0; k < 10; k++)
 			{
-				for (l = 0; l < 100; l++)
+				for (l = 0; l < 10; l++)
 				{
 					if (i + j != k + l && i + j + k + l != 35)
 					{
