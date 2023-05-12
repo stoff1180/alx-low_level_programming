@@ -1,7 +1,5 @@
 #include "main.h"
 #include <elf.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 void print_osabi_more(Elf64_Ehdr h);
 
@@ -248,13 +246,13 @@ int main(int argc, char *argv[])
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Can't open file: %s\n", argv[1]);
 		exit(98);
 	}
 	b = read(fd, &h, sizeof(h));
 	if (b < 1 || b != sizeof(h))
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Can't read from file: %s\n", argv[1]);
 		exit(98);
 	}
 	if (h.e_ident[0] == 0x7f && h.e_ident[1] == 'E' && h.e_ident[2] == 'L' &&
@@ -264,7 +262,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", argv[1]);
+		dprintf(STDERR_FILENO, "No such file: %s\n", argv[1]);
 		exit(98);
 	}
 	print_magic(h);
