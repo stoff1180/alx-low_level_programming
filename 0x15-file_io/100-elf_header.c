@@ -144,6 +144,7 @@ void print_osabi_more(Elf64_Ehdr h)
 			break;
 		default:
 			printf("<unknown: %x>\n", h.e_ident[EI_OSABI]);
+			break;
 	}
 }
 
@@ -189,6 +190,7 @@ void print_type(Elf64_Ehdr h)
 			break;
 		default:
 			printf("<unknown: %x>\n", p[i]);
+			break;
 	}
 }
 
@@ -202,13 +204,13 @@ void print_entry(Elf64_Ehdr h)
 	int i = 0, len = 0;
 	unsigned char *p = (unsigned char *)&h.e_entry;
 
-	printf(" Entry point address: 0x");
+	printf(" Entry point address:  0x");
 	if (h.e_ident[EI_DATA] != ELFDATA2MSB)
 	{
 		i = h.e_ident[EI_CLASS] == ELFCLASS64 ? 7 : 3;
 		while (!p[i])
 			i--;
-		printf("%x", p[i--];)
+		printf("%x", p[i--]);
 		for (; i >= 0; i--)
 			printf("%02x", p[i]);
 		printf("\n");
@@ -219,8 +221,8 @@ void print_entry(Elf64_Ehdr h)
 		len = h.e_ident[EI_CLASS] == ELFCLASS64 ? 7 : 3;
 		while (!p[i])
 			i++;
-		printf("%x", p[i++];)
-			for (; i <= len; i++)
+		printf("%x", p[i++]);
+		for (; i <= len; i++)
 				printf("%02x", p[i]);
 		printf("\n");
 	}
