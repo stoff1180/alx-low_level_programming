@@ -23,7 +23,7 @@ void print_magic(El64_Ehdr h)
  */
 void print_class(Elf64_Ehdr h)
 {
-	printf("Class: ");
+	printf(" Class:  ");
 	switch (h.e_ident[EI_CLASS])
 	{
 		case ELFCLASSNONE:
@@ -67,7 +67,7 @@ void print_data(Elf64_Ehdr h)
  */
 void print_version(Elf64_Ehdr h)
 {
-	printf(" Version:  %d", h.e_ident[EI_VERSION]);
+	printf(" Version:   %d", h.e_ident[EI_VERSION]);
 	switch (h.e_ident[EI_VERSION])
 	{
 		case EV_CURRENT:
@@ -264,7 +264,7 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		dprintf(STDERR_FILENO, "No such file: %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "No ELF file: %s\n", argv[1]);
 		exit(98);
 	}
 	print_magic(h);
