@@ -83,7 +83,7 @@ void print_version(Elf64_Ehdr h)
 
 /**
  * print_osabi - that prints the OS/ABI of an ELF header.
- * @h: the ELF header stryct.
+ * @h: the ELF header struct.
  * Return: void.
  */
 void print_osabi(Elf64_Ehdr h)
@@ -123,7 +123,7 @@ void print_osabi(Elf64_Ehdr h)
 
 /**
  * print_osabi_more - that prints osabi more of an ELF header.
- * @h: the ELF header stryct.
+ * @h: the ELF header struct.
  * Return: void.
  */
 void print_osabi_more(Elf64_Ehdr h)
