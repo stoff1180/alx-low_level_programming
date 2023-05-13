@@ -7,7 +7,7 @@ void print_osabi_more(Elf64_Ehdr h);
  * print_magic - that prints the magic numbers of an ELF header.
  * @h: the ELF header struct.
  */
-void print_magic(El64_Ehdr h)
+void print_magic(Elf64_Ehdr h)
 {
 	int i;
 
