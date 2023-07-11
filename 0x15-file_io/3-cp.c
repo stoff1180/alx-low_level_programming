@@ -19,20 +19,27 @@ int main(int argc, char **argv)
 	if (argc != 3)
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n"), exit(97);
 	from = open(av[1], O_RONLY);
+	if (from == -1)
+	{
+		dprintf(STDERR_FILENO, ERR_NOREAD, argv[1]);
+		exit(98);
+	}
 	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	bytes = read(from, buf, READ_BUF_SIZE);
-	do {
-		if (from == -1 || bytes == -1)
-		{
-			dprintf(STDERR_FILENO, ERR_NOREAD, argv[1]);
-			exit(98);
-		}
-		if (to == -1 || (write(to, buf, bytes) != bytes))
-		{
-			dprintf(STDERR_FILENO, ERR_NOWRITE, argv[2]);
-			exit(99);
-		}
-	} while (bytes > 0)
+	if (to == -1)
+	{
+		dprintf(STDERR_FILENO, ERR_NOWRITE, argv[2]);
+		exit(99);
+	} while ((bytes = read(from, buf, READ_BUF_SIZE)) > 0);
+	if (write(to, buf, bytes) != bytes)
+	{
+		dprintf(STDERR_FILENO, ERR_NOWRITE, argv[2]);
+		exit(99);
+	}
+	if (bytes == -1)
+	{
+		dprintf(STDERR_FILENO, ERR_NOREAD, argv[1]);
+		exit(98);
+	}
 	from = close(from);
 	to = close(to);
 	if (from)
