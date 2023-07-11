@@ -8,7 +8,7 @@
  * main - that copies the contents of a file to another file
  * @argc: parameter to the number of arguments supplied to the program
  * @argv: pointer to an array of pointers to the arguments
- * Return: 0 on success
+ * Return: 1 on success, 0 on failure
  */
 int main(int argc, char **argv)
 {
@@ -24,17 +24,15 @@ int main(int argc, char **argv)
 		dprintf(STDERR_FILENO, ERR_NOREAD, argv[1]);
 		exit(98);
 	}
-	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, PERMISSIONS);
+	to = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, PERMISSIONS);
 	if (to == -1)
-	{
-		dprintf(STDERR_FILENO, ERR_NOWRITE, argv[2]);
-		exit(99);
-	} while ((bytes = read(from, buf, READ_BUF_SIZE)) > 0);
-	if (write(to, buf, bytes) != bytes)
-	{
-		dprintf(STDERR_FILENO, ERR_NOWRITE, argv[2]);
-		exit(99);
-	}
+		dprintf(STDERR_FILENO, ERR_NOWRITE, argv[2]), exit(99);
+	while ((bytes = read(from, buf, READ_BUF_SIZE)) > 0)
+		if (write(to, buf, bytes) != bytes)
+		{
+			dprintf(STDERR_FILENO, ERR_NOWRITE, argv[2]);
+			exit(99);
+		}
 	if (bytes == -1)
 	{
 		dprintf(STDERR_FILENO, ERR_NOREAD, argv[1]);
