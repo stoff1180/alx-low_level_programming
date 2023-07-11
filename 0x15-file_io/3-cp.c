@@ -3,7 +3,7 @@
 #define ERR_NOREAD "Error: Can't read from file %s\n"
 #define ERR_NOWRITE "Error: Can't write to file %s\n"
 #define ERR_NOCLOSE "Error: Can't close file %d\n"
-#define PERMISSIONS(S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH)
+#define PERMISSIONS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH)
 /**
  * main - that copies the contents of a file to another file
  * @ac: parameter to the number of arguments supplied to the program
@@ -18,7 +18,7 @@ int main(int ac, char **av)
 
 	if (ac != 3)
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n"), exit(97);
-	file_from = open(av[1], O_RONLY);
+	file_from = open(av[1], O_RDONLY);
 	if (file_from == -1)
 	{
 		dprintf(STDERR_FILENO, ERR_NOREAD, av[1]);
