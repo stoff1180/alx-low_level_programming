@@ -10,7 +10,7 @@
  * @argv: pointer to an array of pointers to the arguments
  * Return: 0 on success
  */
-int main(int argc, char **argv[])
+int main(int argc, char **argv)
 {
 	int from = 0, to = 0;
 	ssize_t bytes;
