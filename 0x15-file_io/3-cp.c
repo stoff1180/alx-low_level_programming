@@ -12,24 +12,24 @@
  */
 int main(int ac, char **av)
 {
-	int from = 0, to = 0;
+	int file_from = 0, file_to = 0;
 	ssize_t bytes;
 	char buf[READ_BUF_SIZE];
 
 	if (ac != 3)
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n"), exit(97);
-	from = open(av[1], O_RONLY);
-	if (from == -1)
+	file_from = open(av[1], O_RONLY);
+	if (file_from == -1)
 	{
 		dprintf(STDERR_FILENO, ERR_NOREAD, av[1]);
 		exit(98);
 	}
-	to = open(av[2], O_WRONLY | O_CREAT | O_TRUNC, PERMISSIONS);
-	if (to == -1)
+	file_to = open(av[2], O_WRONLY | O_CREAT | O_TRUNC, PERMISSIONS);
+	if (file_to == -1)
 		dprintf(STDERR_FILENO, ERR_NOWRITE, av[2]), exit(99);
 
-	while ((bytes = read(from, buf, READ_BUF_SIZE)) > 0)
-		if (write(to, buf, bytes) != bytes)
+	while ((bytes = read(file_from, buf, READ_BUF_SIZE)) > 0)
+		if (write(file_to, buf, bytes) != bytes)
 		{
 			dprintf(STDERR_FILENO, ERR_NOWRITE, av[2]);
 			exit(99);
@@ -40,11 +40,11 @@ int main(int ac, char **av)
 		exit(98);
 	}
 
-	from = close(from);
-	to = close(to);
-	if (from)
-		dprintf(STDERR_FILENO, ERR_NOCLOSE, from), exit(100);
-	if (to)
-		dprintf(STDERR_FILENO, ERR_NOCLOSE, from), exit(100);
+	file_from = close(file_from);
+	file_to = close(file_to);
+	if (file_from)
+		dprintf(STDERR_FILENO, ERR_NOCLOSE, file_from), exit(100);
+	if (file_to)
+		dprintf(STDERR_FILENO, ERR_NOCLOSE, file_from), exit(100);
 	return (1);
 }
