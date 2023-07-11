@@ -43,6 +43,6 @@ int main(int argc, char **argv)
 	if (from)
 		dprintf(STDERR_FILENO, ERR_NOCLOSE, from), exit(100);
 	if (to)
-		dprintf(STDERR_FILENO, ERR_NOCLOSE, to), exit(100);
+		dprintf(STDERR_FILENO, ERR_NOCLOSE, from), exit(100);
 	return (EXIT_SUCCESS);
 }
