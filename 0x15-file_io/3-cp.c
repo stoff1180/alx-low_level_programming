@@ -3,7 +3,7 @@
 #define ERR_NOREAD "Error: Can't read from file %s\n"
 #define ERR_NOWRITE "Error: Can't write to file %s\n"
 #define ERR_NOCLOSE "Error: Can't close file %d\n"
-
+#define PERMISSIONS(S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH)
 /**
  * main - that copies the contents of a file to another file
  * @argc: parameter to the number of arguments supplied to the program
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 		dprintf(STDERR_FILENO, ERR_NOREAD, argv[1]);
 		exit(98);
 	}
-	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, PERMISSIONS);
 	if (to == -1)
 	{
 		dprintf(STDERR_FILENO, ERR_NOWRITE, argv[2]);
