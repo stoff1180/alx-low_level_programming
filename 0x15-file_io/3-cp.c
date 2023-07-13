@@ -1,50 +1,81 @@
 #include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-#define ERR_NOREAD "Error: Can't read from file %s\n"
-#define ERR_NOWRITE "Error: Can't write to file %s\n"
-#define ERR_NOCLOSE "Error: Can't close file %d\n"
-#define PERMISSIONS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH)
+void error_file(int file_from, int file_to, char *argv[]);
+void close_file(int fd);
+
 /**
- * main - that copies the contents of a file to another file
- * @ac: parameter to the number of arguments supplied to the program
- * @av: pointer to an array of pointers to the arguments
- * Return: 1 on success, 0 on failure
+ * error_file - checks if files can be opened.
+ * @file_from: file_from.
+ * @file_to: file_to.
+ * @argv: arguments vector.
+ * Return: no return.
  */
-int main(int ac, char **av)
+void error_file(int file_from, int file_to, char *argv[])
 {
-	int file_from = 0, file_to = 0;
-	ssize_t bytes;
-	char buf[READ_BUF_SIZE];
-
-	if (ac != 3)
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n"), exit(97);
-	file_from = open(av[1], O_RDONLY);
 	if (file_from == -1)
 	{
-		dprintf(STDERR_FILENO, ERR_NOREAD, av[1]);
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
-	file_to = open(av[2], O_WRONLY | O_CREAT | O_TRUNC, PERMISSIONS);
 	if (file_to == -1)
-		dprintf(STDERR_FILENO, ERR_NOWRITE, av[2]), exit(99);
-
-	while ((bytes = read(file_from, buf, READ_BUF_SIZE)) > 0)
-		if (write(file_to, buf, bytes) != bytes)
-		{
-			dprintf(STDERR_FILENO, ERR_NOWRITE, av[2]);
-			exit(99);
-		}
-	if (bytes == -1)
 	{
-		dprintf(STDERR_FILENO, ERR_NOREAD, av[1]);
-		exit(98);
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		exit(99);
+	}
+}
+
+
+/**
+ * close_file - Closes file descriptors.
+ * @fd: The file descriptor to be closed.
+ */
+void close_file(int fd)
+{
+	int c;
+
+	c = close(fd);
+	if (c == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd);
+		exit(100);
+	}
+}
+
+/**
+ * main - check the code for Holberton School students.
+ * @argc: number of arguments.
+ * @argv: arguments vector.
+ * Return: Always 0.
+ */
+int main(int argc, char *argv[])
+{
+	int file_from, file_to;
+	ssize_t nrd, nwr;
+	char buf[1024];
+
+	if (argc != 3)
+	{
+		dprintf(STDERR_FILENO, "%s\n", "Usage: cp file_from file_to");
+		exit(97);
 	}
 
-	file_from = close(file_from);
-	file_to = close(file_to);
-	if (file_from)
-		dprintf(STDERR_FILENO, ERR_NOCLOSE, file_from), exit(100);
-	if (file_to)
-		dprintf(STDERR_FILENO, ERR_NOCLOSE, file_from), exit(100);
-	return (1);
+	file_from = open(argv[1], O_RDONLY);
+	file_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0664);
+	error_file(file_from, file_to, argv);
+	nrd = 1024;
+	while (nrd == 1024)
+	{
+		nrd = read(file_from, buf, 1024);
+		if (nrd == -1)
+			error_file(-1, 0, argv);
+		nwr = write(file_to, buf, nrd);
+		if (nwr == -1)
+			error_file(0, -1, argv);
+	}
+	close_file(file_from);
+	close_file(file_to);
+	return (0);
 }
+
