@@ -15,4 +15,3 @@ int _atoi(const char *s);
 int get_endianness(void);
 
 #endif
-~         
